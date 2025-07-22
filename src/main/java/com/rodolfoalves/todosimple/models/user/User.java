@@ -1,11 +1,13 @@
 package com.rodolfoalves.todosimple.models.user;
 
+import com.rodolfoalves.todosimple.models.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,7 +35,8 @@ public class User {
     @Size(groups = {com.rodolfoalves.todosimple.models.user.CreateUser.class, com.rodolfoalves.todosimple.models.user.UpdateUser.class}, min = 6, max = 60)
     private String password;
 
-//    private List<Task> = new ArrayList<Task>();
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<Task>();
 
     public User(){}
 
