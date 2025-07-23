@@ -38,6 +38,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<Task>();
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     public User(){}
 
     public User(Long id, String username, String password) {
