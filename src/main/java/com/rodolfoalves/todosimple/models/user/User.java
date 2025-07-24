@@ -1,5 +1,6 @@
 package com.rodolfoalves.todosimple.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rodolfoalves.todosimple.models.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,6 +39,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<Task>();
 
+    @JsonIgnore
     public List<Task> getTasks() {
         return tasks;
     }
