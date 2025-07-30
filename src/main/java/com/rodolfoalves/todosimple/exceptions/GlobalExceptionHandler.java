@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @Value("${server.error.include-exception}")
+    @Value("${server.error.include-exception:false}")
     private boolean printStackTrace;
 
     @Override
