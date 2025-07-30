@@ -7,6 +7,7 @@ import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
@@ -27,6 +31,7 @@ public class UserService {
     @Transactional
     public User createUser(User obj) {
         obj.setId(null);
+        obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
         obj = this.userRepository.save(obj);
         return obj;
     }
@@ -34,7 +39,7 @@ public class UserService {
     @Transactional
     public User updateUser(User obj){
         User newObj = findById(obj.getId());
-        newObj.setPassword(obj.getPassword());
+        newObj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
         return this.userRepository.save(newObj);
     }
 
