@@ -3,6 +3,7 @@ package com.rodolfoalves.todosimple.services.task;
 import com.rodolfoalves.todosimple.models.task.Task;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.task.TaskRepository;
+import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
 import com.rodolfoalves.todosimple.services.user.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         } catch (Exception error){
-            throw new RuntimeException(
+            throw new DataBindingViolationException(
                     "Erro ao apagar a task!"
             );
         }
