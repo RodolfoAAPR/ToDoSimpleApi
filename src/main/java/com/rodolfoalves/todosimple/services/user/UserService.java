@@ -2,6 +2,7 @@ package com.rodolfoalves.todosimple.services.user;
 
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.user.UserRepository;
+import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
 import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
@@ -43,7 +44,7 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         } catch(Exception error) {
-            throw new RuntimeException(
+            throw new DataBindingViolationException(
                     "Não é possível excluir o usuário porquê não há entidades relacionadas."
             );
         }
