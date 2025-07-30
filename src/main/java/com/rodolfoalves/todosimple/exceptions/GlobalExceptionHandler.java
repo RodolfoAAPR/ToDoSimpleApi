@@ -1,7 +1,10 @@
 package com.rodolfoalves.todosimple.exceptions;
 
+import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
+import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +43,42 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errorResponse.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return ResponseEntity.unprocessableEntity().body(errorResponse);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<Object> handleConstrainViolationException(
+            ConstraintViolationException constraintViolationException,
+            WebRequest request){
+        log.error("Failed to validate element", constraintViolationException);
+        return buildErrorResponse(
+                constraintViolationException,
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                request);
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleObjectNotFoundException(
+            ObjectNotFoundException objectNotFoundException,
+            WebRequest request){
+        log.error("Failed to find the requested element");
+        return buildErrorResponse(
+                objectNotFoundException,
+                HttpStatus.NOT_FOUND,
+                request);
+    }
+
+    @ExceptionHandler(DataBindingViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Object> handleDataBindingViolationException(
+            DataBindingViolationException dataBindingViolationException,
+            WebRequest request){
+        log.error("Failed to save entity with associated data");
+        return buildErrorResponse(
+                dataBindingViolationException,
+                HttpStatus.CONFLICT,
+                request);
     }
 
     private ResponseEntity<Object> buildErrorResponse(
