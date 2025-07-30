@@ -1,5 +1,6 @@
 package com.rodolfoalves.todosimple.exceptions;
 
+import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
 import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(
                 objectNotFoundException,
                 HttpStatus.NOT_FOUND,
+                request);
+    }
+
+    @ExceptionHandler(DataBindingViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Object> handleDataBindingViolationException(
+            DataBindingViolationException dataBindingViolationException,
+            WebRequest request){
+        log.error("Failed to save entity with associated data");
+        return buildErrorResponse(
+                dataBindingViolationException,
+                HttpStatus.CONFLICT,
                 request);
     }
 
