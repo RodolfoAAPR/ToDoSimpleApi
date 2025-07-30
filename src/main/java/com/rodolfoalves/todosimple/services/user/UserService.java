@@ -2,6 +2,8 @@ package com.rodolfoalves.todosimple.services.user;
 
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.user.UserRepository;
+import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
-        return user.orElseThrow(() -> new RuntimeException(
+        return user.orElseThrow(() -> new ObjectNotFoundException(
                 "Usuário não encontrado! Id: " + id + ", Tipo: " + User.class.getName()
         ));
     }
