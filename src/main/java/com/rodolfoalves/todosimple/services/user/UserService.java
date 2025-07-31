@@ -1,5 +1,6 @@
 package com.rodolfoalves.todosimple.services.user;
 
+import com.rodolfoalves.todosimple.models.enums.ProfileEnum;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.user.UserRepository;
 import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -32,6 +35,7 @@ public class UserService {
     public User createUser(User obj) {
         obj.setId(null);
         obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
+        obj.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
         obj = this.userRepository.save(obj);
         return obj;
     }
