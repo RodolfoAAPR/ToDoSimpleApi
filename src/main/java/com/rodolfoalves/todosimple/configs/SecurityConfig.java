@@ -1,5 +1,6 @@
 package com.rodolfoalves.todosimple.configs;
 
+import com.rodolfoalves.todosimple.security.JWTAuthenticationFilter;
 import com.rodolfoalves.todosimple.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,14 +53,16 @@ public class SecurityConfig {
                 .getSharedObject(AuthenticationManagerBuilder.class);
 
         authenticationManagerBuilder.userDetailsService(this.userDetailsService)
-                        .passwordEncoder(bCryptPasswordEncoder());
+                .passwordEncoder(bCryptPasswordEncoder());
 
         this.authenticationManager = authenticationManagerBuilder.build();
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().authenticated()).authenticationManager(authenticationManager);
+
+        http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
 
         http.sessionManagement(session
                 -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
