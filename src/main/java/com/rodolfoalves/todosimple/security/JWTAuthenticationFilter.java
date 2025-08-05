@@ -45,7 +45,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
-    protected void sucessfulAuthentication(
+    protected void successfulAuthentication(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain,
