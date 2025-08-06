@@ -27,7 +27,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
-import java.nio.channels.AcceptPendingException;
 
 
 @Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER") //Logger para printar no console
@@ -111,6 +110,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
                 accessDeniedException,
                 HttpStatus.FORBIDDEN,
                 request);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleAuthenticationException(
+            AuthenticationException authenticationException,
+            WebRequest request){
+        log.error("Authentication error", authenticationException);
+        return buildErrorResponse(
+                authenticationException,
+                HttpStatus.UNAUTHORIZED,
+                request
+        );
     }
 
     private ResponseEntity<Object> buildErrorResponse(
