@@ -101,6 +101,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
                 request
         );
     }
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleAccessDeniedException(
+            AccessDeniedException accessDeniedException,
+            WebRequest request){
+        log.error("Authorization error", accessDeniedException);
+        return buildErrorResponse(
+                accessDeniedException,
+                HttpStatus.FORBIDDEN,
+                request);
+    }
 
     private ResponseEntity<Object> buildErrorResponse(
             Exception exception,
