@@ -1,5 +1,6 @@
 package com.rodolfoalves.todosimple.exceptions;
 
+import com.rodolfoalves.todosimple.services.exceptions.AuthorizationException;
 import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
 import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.ServletException;
