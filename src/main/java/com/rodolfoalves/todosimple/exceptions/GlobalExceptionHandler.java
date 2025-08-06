@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.validation.FieldError;
@@ -26,6 +27,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
+import java.nio.channels.AcceptPendingException;
 
 
 @Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER") //Logger para printar no console
@@ -85,6 +87,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
                 dataBindingViolationException,
                 HttpStatus.CONFLICT,
                 request);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleAuthorizationExcpetion(
+            AuthorizationException authorizationException,
+            WebRequest request){
+        log.error("Authorization error", authorizationException);
+        return buildErrorResponse(
+                authorizationException,
+                HttpStatus.FORBIDDEN,
+                request
+        );
     }
 
     private ResponseEntity<Object> buildErrorResponse(
