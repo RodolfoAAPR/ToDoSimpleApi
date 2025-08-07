@@ -30,8 +30,8 @@ public class TaskService {
                 "Não foi possível localizar a task! Id: " + id + "Tipo: " + Task.class.getName()));
 
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
-        if(Objects.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN) &&
-                userHasTask(userSpringSecurity, task))
+        if(Objects.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN)
+                && userHasTask(userSpringSecurity, task))
             throw new AuthorizationException("Acesso negado!");
         return task;
     }
