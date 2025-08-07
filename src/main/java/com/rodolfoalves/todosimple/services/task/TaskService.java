@@ -3,6 +3,8 @@ package com.rodolfoalves.todosimple.services.task;
 import com.rodolfoalves.todosimple.models.task.Task;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.task.TaskRepository;
+import com.rodolfoalves.todosimple.security.UserSpringSecurity;
+import com.rodolfoalves.todosimple.services.exceptions.AuthorizationException;
 import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
 import com.rodolfoalves.todosimple.services.user.UserService;
 import jakarta.transaction.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -59,5 +62,9 @@ public class TaskService {
                     "Erro ao apagar a task!"
             );
         }
+    }
+
+    private Boolean userHasTask(UserSpringSecurity userSpringSecurity, Task task){
+        return task.getUser().getId().equals(userSpringSecurity.getId());
     }
 }
