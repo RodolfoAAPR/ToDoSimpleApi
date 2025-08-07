@@ -1,8 +1,11 @@
 package com.rodolfoalves.todosimple.services.task;
 
+import com.rodolfoalves.todosimple.models.enums.ProfileEnum;
 import com.rodolfoalves.todosimple.models.task.Task;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.task.TaskRepository;
+import com.rodolfoalves.todosimple.security.UserSpringSecurity;
+import com.rodolfoalves.todosimple.services.exceptions.AuthorizationException;
 import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationException;
 import com.rodolfoalves.todosimple.services.user.UserService;
 import jakarta.transaction.Transactional;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,13 +26,17 @@ public class TaskService {
     private UserService userService;
 
     public Task findById(Long id){
-        Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException(
-                "Não foi possível localizar a task! Id: " + id + "Tipo: " + Task.class.getName()
-        ));
+        Task task = this.taskRepository.findById(id).orElseThrow(() -> new RuntimeException(
+                "Não foi possível localizar a task! Id: " + id + "Tipo: " + Task.class.getName()));
+
+        UserSpringSecurity userSpringSecurity = UserService.authenticated();
+        if(Objects.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN)
+                && userHasTask(userSpringSecurity, task))
+            throw new AuthorizationException("Acesso negado!");
+        return task;
     }
 
-    public List<Task> findAllByUserId(Long userId){
+    public List<Task> findAllByUser(Long userId){
         List<Task> tasks = this.taskRepository.findByUser_Id(userId);
         return tasks;
     }
@@ -59,5 +67,9 @@ public class TaskService {
                     "Erro ao apagar a task!"
             );
         }
+    }
+
+    private Boolean userHasTask(UserSpringSecurity userSpringSecurity, Task task){
+        return task.getUser().getId().equals(userSpringSecurity.getId());
     }
 }
