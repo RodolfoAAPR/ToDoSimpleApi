@@ -1,6 +1,7 @@
 package com.rodolfoalves.todosimple.services.task;
 
 import com.rodolfoalves.todosimple.models.enums.ProfileEnum;
+import com.rodolfoalves.todosimple.models.projection.TaskProjection;
 import com.rodolfoalves.todosimple.models.task.Task;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.task.TaskRepository;
@@ -35,12 +36,12 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findAllByUser(){
+    public List<TaskProjection> findAllByUser(){
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
         if(Objects.isNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
 
-        List<Task> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
+        List<TaskProjection> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
         return tasks;
     }
 
