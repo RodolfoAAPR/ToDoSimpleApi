@@ -1,6 +1,7 @@
 package com.rodolfoalves.todosimple.services.user;
 
 import com.rodolfoalves.todosimple.models.dto.UserCreateDTO;
+import com.rodolfoalves.todosimple.models.dto.UserUpdateDTO;
 import com.rodolfoalves.todosimple.models.enums.ProfileEnum;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.user.UserRepository;
