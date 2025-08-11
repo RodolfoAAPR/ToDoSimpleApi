@@ -1,5 +1,7 @@
 package com.rodolfoalves.todosimple.controllers.user;
 
+import com.rodolfoalves.todosimple.models.dto.UserCreateDTO;
+import com.rodolfoalves.todosimple.models.dto.UserUpdateDTO;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.services.user.UserService;
 import jakarta.validation.Valid;
@@ -26,20 +28,20 @@ public class UserController {
     }
 
     @PostMapping
-    @Validated(User.CreateUser.class)
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User obj){
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreateDTO obj){
+        User user = this.userService.fromDTO(obj);
+        User newUser = this.userService.createUser(user);
 
-        this.userService.createUser(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
-    @Validated(User.UpdateUser.class)
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User obj, @PathVariable Long id){
+    public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO obj, @PathVariable Long id){
         obj.setId(id);
-        this.userService.updateUser(obj);
+        User user = this.userService.fromDTO(obj);
+        this.userService.updateUser(user);
         return ResponseEntity.noContent().build();
     }
 

@@ -168,7 +168,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType("application/json");
         int status = HttpStatus.UNAUTHORIZED.value();
-        ErrorResponse errorResponse = new ErrorResponse(status, "Email ou senha inválidos!");
+        ErrorResponse errorResponse = new ErrorResponse(status, "Username or password are invalids!");
         response.getWriter().append(errorResponse.toJson());
     }
 }

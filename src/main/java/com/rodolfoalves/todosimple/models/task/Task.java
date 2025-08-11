@@ -3,8 +3,7 @@ package com.rodolfoalves.todosimple.models.task;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rodolfoalves.todosimple.models.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -16,8 +15,7 @@ import java.util.List;
 @Table(name = Task.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
 public class Task {
     public static final String TABLE_NAME = "task";
@@ -32,8 +30,7 @@ public class Task {
     private User user;
 
     @Column(name = "description", nullable = false)
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Size(min = 5, max = 255)
     private String description;
 

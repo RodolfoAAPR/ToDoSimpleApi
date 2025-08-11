@@ -1,5 +1,7 @@
 package com.rodolfoalves.todosimple.services.user;
 
+import com.rodolfoalves.todosimple.models.dto.UserCreateDTO;
+import com.rodolfoalves.todosimple.models.dto.UserUpdateDTO;
 import com.rodolfoalves.todosimple.models.enums.ProfileEnum;
 import com.rodolfoalves.todosimple.models.user.User;
 import com.rodolfoalves.todosimple.repositories.user.UserRepository;
@@ -9,6 +11,7 @@ import com.rodolfoalves.todosimple.services.exceptions.DataBindingViolationExcep
 import com.rodolfoalves.todosimple.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,5 +77,19 @@ public class UserService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public User fromDTO(@Valid UserCreateDTO obj) {
+        User user = new User();
+        user.setUsername(obj.getUsername());
+        user.setPassword(obj.getPassword());
+        return user;
+    }
+
+    public User fromDTO(@Valid UserUpdateDTO obj){
+        User user = new User();
+        user.setId(obj.getID());
+        user.setPassword(obj.getPassword());
+        return user;
     }
 }

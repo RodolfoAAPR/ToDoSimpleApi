@@ -1,5 +1,6 @@
 package com.rodolfoalves.todosimple.controllers.task;
 
+import com.rodolfoalves.todosimple.models.projection.TaskProjection;
 import com.rodolfoalves.todosimple.models.task.Task;
 import com.rodolfoalves.todosimple.services.task.TaskService;
 import com.rodolfoalves.todosimple.services.user.UserService;
@@ -31,8 +32,8 @@ public class TaskController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<Task>> findAllByUser(){
-        List<Task> obj = this.taskService.findAllByUser();
+    public ResponseEntity<List<TaskProjection>> findAllByUser(){
+        List<TaskProjection> obj = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(obj);
     }
 
