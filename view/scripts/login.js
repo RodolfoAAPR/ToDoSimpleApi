@@ -35,7 +35,7 @@ async function login() {
     function showToast(id) {
         var toastElList = [].slice.call(document.querySelectorAll(id));
         var toastList = toastElList.map(function (toastEl) {
-            return new boostrap.Toast(toastEl);
+            return new bootstrap.Toast(toastEl);
         });
 
         toastList.forEach((toast) => toast.show());
