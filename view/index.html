@@ -21,7 +21,16 @@
             </span>
         </div>
         
-        <p class="h1 text-center">Tarefas do Usuário</p>
+    <div class="d-flex">
+      <p class="h1 text-center flex-grow-1">Suas tarefas</p>
+      <button
+        type="button"
+        class="btn btn-outline-dark text-left"
+        onclick="localStorage.removeItem('Authorization'); window.location = '/view/login.html'"
+      >
+        SignOut
+      </button>
+      </div>
 
         <table class="table table-hover">
             <tbody id="tasks"></tbody>
