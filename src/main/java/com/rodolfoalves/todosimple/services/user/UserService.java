@@ -88,7 +88,7 @@ public class UserService {
 
     public User fromDTO(@Valid UserUpdateDTO obj){
         User user = new User();
-        user.setId(obj.getID());
+        user.setId(obj.getId());
         user.setPassword(obj.getPassword());
         return user;
     }
