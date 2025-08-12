@@ -18,9 +18,7 @@ function show(tasks){
                     tab += `
                         <tr>
                             <td scope="row">${task.id}</td>
-                            <td scope="row">${task.description}</td>
-                            <td scope="row">${task.user.username}</td>
-                            <td scope="row">${task.user.id}</td>
+                            <td>${task.description}</td>
                         </tr>    
                     `;
                 }
@@ -28,14 +26,24 @@ function show(tasks){
     document.getElementById("tasks").innerHTML = tab;
 }
 
-async function getAPI(url) {
-    const response = await fetch(url, { method: "GET" });
+async function getTasks(){
+    let key = "Authorization";
+    const response = await fetch(taskEndpoint, {
+        method: "GET",
+        headres: new Headers({
+            Authorization: localStorage.getItem(key),
+        }),
+    });
 
     var data = await response.json();
     console.log(data);
-    if(response) 
-        hideLoader();
-    show(data);  
+    if (response) hideLoader();
+    show(data);
 }
 
-getAPI(url);
+document.addEventListene("DOMContentLoaded", function (event){
+    if (!localStorage.getItem("Authorization"))
+        window.location = "view/login.html";
+});
+
+getTasks();
